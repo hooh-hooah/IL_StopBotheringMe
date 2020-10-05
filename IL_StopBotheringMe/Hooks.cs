@@ -1,21 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using AIChara;
-using BepInEx.Logging;
+﻿using BepInEx.Logging;
 using HarmonyLib;
 using UnityEngine;
+using StudioMap = Studio.Map;
+
+// ReSharper disable InconsistentNaming
+// ReSharper disable UnusedMember.Global
+// ReSharper disable MemberCanBePrivate.Global
 
 namespace StopBotheringMeComponents
 {
     public static class Hooks
     {
         public static ManualLogSource Logger { get; set; }
-        
+
         [HarmonyPrefix]
-        [HarmonyPatch(typeof(Studio.Map), nameof(Studio.Map.LoadMap), typeof(int))]
-        // ReSharper disable once UnusedMember.Global
-        public static void LoadMap(Studio.Map __instance, int _no)
+        [HarmonyPatch(typeof(StudioMap), nameof(StudioMap.LoadMap), typeof(int))]
+        public static void LoadMap(StudioMap __instance, int _no)
         {
             // Clear existing shits 
             LightmapSettings.lightProbes = null;
@@ -23,9 +23,8 @@ namespace StopBotheringMeComponents
         }
 
         [HarmonyPrefix]
-        [HarmonyPatch(typeof(Studio.Map), nameof(Studio.Map.LoadMapCoroutine), typeof(int), typeof(bool))]
-        // ReSharper disable once UnusedMember.Global
-        public static void LoadMap(Studio.Map __instance, int _no, bool _wait)
+        [HarmonyPatch(typeof(StudioMap), nameof(StudioMap.LoadMapCoroutine), typeof(int), typeof(bool))]
+        public static void LoadMap(StudioMap __instance, int _no, bool _wait)
         {
             LoadMap(__instance, _no);
         }
